@@ -1,0 +1,7 @@
+{
+  "name": "Anan Tech AI Photo Studio",
+  "description": "A professional AI-powered photo studio with 50mm*50mm default sizing, custom sizes, expanded dress options, and advanced admin management with siren alerts.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
