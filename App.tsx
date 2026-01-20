@@ -59,10 +59,16 @@ const App: React.FC = () => {
     }
   }, [users, photos, recharges, settings, role]);
 
-  const handleLoginSuccess = (user: User, r: UserRole) => {
-    setCurrentUser(user);
-    setRole(r);
-    setActiveTab(r === UserRole.ADMIN ? 'dashboard' : 'studio');
+  const handleLoginSuccess = (user: User | string, r?: UserRole) => {
+    if (typeof user === 'string') {
+      setCurrentUser(null);
+      setRole(UserRole.ADMIN);
+      setActiveTab('dashboard');
+    } else {
+      setCurrentUser(user);
+      setRole(r || UserRole.USER);
+      setActiveTab(r === UserRole.ADMIN ? 'dashboard' : 'studio');
+    }
   };
 
   const handleLogout = () => {

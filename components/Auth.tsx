@@ -5,7 +5,7 @@ import { supabase } from '../supabase';
 import { Mail, User as UserIcon, Lock, Sparkles, ArrowRight, Loader2, Key, Headset, Eye, EyeOff } from 'lucide-react';
 
 interface AuthProps {
-  onLogin: (userId: string) => void;
+  onLogin: (user: any) => void;
   settings: SystemSettings;
 }
 
@@ -29,19 +29,22 @@ const Auth: React.FC<AuthProps> = ({ onLogin, settings }) => {
 
     try {
       if (isAdminLogin) {
-        const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
+        if (formData.email !== 'anantech.ad@gmail.com') throw new Error('ভুল ইমেইল।');
+        if (formData.password !== 'Anan21') throw new Error('ভুল পাসওয়ার্ড।');
+        if (formData.adminPin !== '2161') throw new Error('ভুল এডমিন পিন।');
 
-        if (signInError) throw new Error('ভুল ইমেইল বা পাসওয়ার্ড।');
+        const adminUser = {
+          id: 'admin-001',
+          name: 'Admin',
+          email: 'anantech.ad@gmail.com',
+          password: 'Anan21',
+          balance: 999999,
+          referralCode: 'ADMIN001',
+          isSuspended: false,
+          createdAt: new Date().toISOString()
+        };
 
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user?.id).single();
-        if (profile?.role !== 'ADMIN') throw new Error('আপনার এডমিন এক্সেস নেই।');
-        
-        if (formData.adminPin !== settings.adminPin) throw new Error('ভুল এডমিন পিন।');
-
-        onLogin(user!.id);
+        onLogin(adminUser);
         return;
       }
 
